@@ -1,0 +1,13 @@
+Project Title
+Group Number: Team members
+1. Project Scope
+Describe the project goal and the expected outcomes. Be as specific as possible so that the results can
+provide strong support to the outcomes.
+2. Method and Implementation Details
+Describe the method with a system flowchart, including the steps and/or components.
+Describe the functions, libraries, and parameters used in the implementation.
+Highlight the image processing techniques used in the implementation.
+3. Results
+Include a thorough evaluation of the method using different inputs, parameters, etc.
+Highlight successful cases.
+Give examples of failure cases and suggest possible remedies.
