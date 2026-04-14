@@ -1,13 +1,99 @@
-Project Title
-Group Number: Team members
+Project Title: Face Recognition System
+Group Number: 3
+Team Members: Chet, Logan, Michael
+
 1. Project Scope
-Describe the project goal and the expected outcomes. Be as specific as possible so that the results can
-provide strong support to the outcomes.
+
+The goal of this project is to build a basic face recognition system using image or video input.
+The system will:
+
+- Detect a face in an image or video frame
+- Extract/crop the face region
+- Compare the face to a set of registered users
+- Output whether the person is registered or not registered
+
+Input:
+- Images or short video clips
+
+Output:
+- Label showing identity/matched or unknown
+
+Expected outcome:
+- A working pipeline that processes input and produces recognition results
+- The system should correctly identify registered users and label unregistered users as unknow
+
 2. Method and Implementation Details
-Describe the method with a system flowchart, including the steps and/or components.
-Describe the functions, libraries, and parameters used in the implementation.
-Highlight the image processing techniques used in the implementation.
+
+- Grayscale Conversion
+  - Convert RGB image to grayscale
+  - Used to reduce complexity and focus on intensity values
+- Spatial Filtering
+  - Apply Gaussian blur
+  - Used to reduce noise and smooth the image
+- Image Histogram
+  - Apply histogram equalization
+  - Used to improve contrast under different lighting conditions
+- Image Transformations
+  - Resize images to a fixed size
+  - Used to make all inputs consistent
+- Image Features
+  - Use Local Binary Patterns Histogram
+  - Used to extract facial features and compare faces
+
+Flowchart:
+
+Input Image/Video -> Frame Extraction -> Grayscale Conversion
+-> Noise Reduction/Spatial Filtering -> Histogram Equalization -> Face Detection
+-> Crop Face Region -> Resize Image -> Feature Extraction + Recognition -> Known / Unknown Output
+
+Functions, Libraries, and Parameters
+
+Library:
+
+MATLAB Image Processing Toolbox
+
+Functions:
+
+- imread() / VideoReader()
+  - Used to load images or read video frames
+- rgb2gray()
+  - Converts image to grayscale
+- imgaussfilt()
+  - Applies smoothing filter to reduce noise
+- histeq()
+  - Improves image contrast
+- vision.CascadeObjectDetector()
+  - Detects face location in the image
+-  extractLBPFeatures()
+  - Extracts facial features for comparison
+
+Parameter Examples:
+
+- Scale factor for face detection sensitivity
+- Minimum neighbors for accuracy of detection
+- Image size
+- Confidence threshold for recognition decision
+
+Image Processing Techniques To Be Used
+
+- Grayscale conversion 
+- Spatial filtering/Gaussian blur
+- Histogram equalization
+- Image transformation
+- LBPH for feature extraction 
+
 3. Results
-Include a thorough evaluation of the method using different inputs, parameters, etc.
-Highlight successful cases.
-Give examples of failure cases and suggest possible remedies.
+
+The system will be tested using sample images or short video clips.
+
+Successful cases:
+
+- Clear, front-facing faces
+- Good lighting conditions
+- Properly registered users
+
+Failure cases:
+
+- Poor lighting conditions
+- Face at extreme angles
+- Blurry or low-quality images
