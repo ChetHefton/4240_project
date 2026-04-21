@@ -1,22 +1,4 @@
-Project Title: Face Recognition System
-Group Number: 3
-Team Members: Chet, Logan, Michael
 
-1. Project Scope
-
-The goal of this project is to build a basic face recognition system using image or video input.
-The system will:
-
-- Detect a face in an image or video frame
-- Extract/crop the face region
-- Compare the face to a set of registered users
-- Output whether the person is registered or not registered
-
-Input:
-- Images or short video clips
-
-Output:
-- Label showing identity/matched or unknownProject Title: Face Recognition System
 Group Number: 3
 Team Members: Chet, Logan, Michael
 
