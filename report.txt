@@ -16,84 +16,108 @@ Input:
 - Images or short video clips
 
 Output:
-- Label showing identity/matched or unknown
+- Label showing identity/matched or unknownProject Title: Face Recognition System
+Group Number: 3
+Team Members: Chet, Logan, Michael
+
+1. Project Scope
+The goal of this project is to build a face recognition system that can detect and identify registered individuals (celebrities) from standard image inputs.
+
+The system will:
+
+ - Detect a face in an input image.
+
+ - Crop and preprocess the face region to isolate core structural features.
+
+ - Compare the input face to a dataset of registered users using mathematical feature extraction.
+
+ - Output whether the person is registered (with a confidence score) or not registered.
+
+Input:
+
+ - Standard images of faces (e.g., celebrity photos) under varying lighting and angles.
+
+Output:
+
+ - A visual label showing the matched identity and confidence percentage, or an "N/A" label for unregistered users.
 
 Expected outcome:
-- A working pipeline that processes input and produces recognition results
-- The system should correctly identify registered users and label unregistered users as unknow
 
-2. Method and Implementation Details
+ - A working pipeline that correctly identifies registered users and filters out unknown subjects utilizing a strict 50% confidence threshold.
 
-- Grayscale Conversion
-  - Convert RGB image to grayscale
-  - Used to reduce complexity and focus on intensity values
-- Spatial Filtering
-  - Apply Gaussian blur
-  - Used to reduce noise and smooth the image
-- Image Histogram
-  - Apply histogram equalization
-  - Used to improve contrast under different lighting conditions
-- Image Transformations
-  - Resize images to a fixed size
-  - Used to make all inputs consistent
-- Image Features
-  - Use Local Binary Patterns Histogram
-  - Used to extract facial features and compare faces
+2. Algorithm Progression and Selection
+
+During development, we iteratively tested three feature extraction methods to solve accuracy issues before finalizing our approach:
+
+ - Local Binary Patterns (LBP): Analyzes micro-textures by comparing the brightness of adjacent pixels.
+
+       - Why we moved on: LBP proved too sensitive to minor lighting changes and skin texture variations       between different photos of the same person.
+
+ - Histogram of Oriented Gradients (HOG): Captures edge directions to form a macro-structural outline of the face.
+
+       - Why we moved on: HOG uses a rigid grid, making it highly sensitive to slight head tilts or minor shifts in the bounding box alignment.
+
+- Principal Component Analysis (PCA / Eigenfaces): Flattens images to calculate a mathematical "Average Face" across the dataset, scoring new faces based on how their global geometry deviates from that average.
+
+       - Why we selected it: PCA evaluates overall facial structure rather than local pixel grids, making it much more robust to lighting and alignment variations.
+
+3. Method and Implementation Details
+
+Core Image Processing Techniques:
+
+- Grayscale Conversion: Converts RGB images to intensity values to reduce computational complexity.
+
+- Tight Bounding Box Cropping: Reduces the detected face region by 15% to eliminate background noise and hair, focusing strictly on facial geometry.
+
+- Adaptive Histogram Equalization (CLAHE): Enhances local image contrast to normalize shadows and varying lighting conditions.
+
+- Data Augmentation: Generates horizontally flipped versions of registered faces to instantly double the reference dataset and teach the algorithm spatial symmetry.
+
+- Principal Component Analysis (PCA): Extracts Eigenvectors (Eigenfaces) to create a multi-dimensional "Face Space." The first principal component is discarded to reduce the impact of global lighting direction.
+
+- Cosine Distance: Measures the angle between vectors in the PCA space rather than magnitude, ensuring accurate matches regardless of overall image brightness.
 
 Flowchart:
 
-Input Image/Video -> Frame Extraction -> Grayscale Conversion
--> Noise Reduction/Spatial Filtering -> Histogram Equalization -> Face Detection
--> Crop Face Region -> Resize Image -> Feature Extraction + Recognition -> Known / Unknown Output
+Input Image -> Face Detection -> Tight Crop -> Grayscale Conversion -> CLAHE Enhancement -> Image Resize (100x100) -> PCA Feature Extraction -> Cosine Similarity Comparison -> Known/Unknown Output.
 
 Functions, Libraries, and Parameters
 
-Library:
+Library: MATLAB Image Processing Toolbox, Computer Vision Toolbox
+Key Functions:
 
-MATLAB Image Processing Toolbox
+imread(): Loads input images.
 
-Functions:
+vision.CascadeObjectDetector(): Detects face location in the image.
 
-- imread() / VideoReader()
-  - Used to load images or read video frames
-- rgb2gray()
-  - Converts image to grayscale
-- imgaussfilt()
-  - Applies smoothing filter to reduce noise
-- histeq()
-  - Improves image contrast
-- vision.CascadeObjectDetector()
-  - Detects face location in the image
--  extractLBPFeatures()
-  - Extracts facial features for comparison
+imcrop(): Extracts the specific bounding box of the face.
 
-Parameter Examples:
+rgb2gray(): Converts the image to grayscale.
 
-- Scale factor for face detection sensitivity
-- Minimum neighbors for accuracy of detection
-- Image size
-- Confidence threshold for recognition decision
+adapthisteq(): Enhances local image contrast.
 
-Image Processing Techniques To Be Used
+imresize(): Standardizes all facial matrices to exactly 100x100 pixels.
 
-- Grayscale conversion 
-- Spatial filtering/Gaussian blur
-- Histogram equalization
-- Image transformation
-- LBPH for feature extraction 
+fliplr(): Mirrors matrices horizontally for data augmentation.
 
-3. Results
+eig(): Computes eigenvalues and eigenvectors for PCA.
 
-The system will be tested using sample images or short video clips.
+vecnorm() and norm(): Calculates vector magnitudes for Cosine distance comparison.
+
+4. Results
+
+The system will be tested using a variety of sample celebrity images to evaluate its accuracy across different environments.
 
 Successful cases:
 
-- Clear, front-facing faces
-- Good lighting conditions
-- Properly registered users
+ - Clear, front-facing faces.
+
+ - Images with differing lighting conditions or varying brightness.
+
+ - Single-reference matching (successfully identifying someone based on only one registered photo via data augmentation).
 
 Failure cases:
 
-- Poor lighting conditions
-- Face at extreme angles
-- Blurry or low-quality images
+ - Faces at extreme profile angles where geometric structure is hidden.
+
+ - Low-quality images or images with heavy occlusion where initial face detection fails.
