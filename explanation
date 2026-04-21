@@ -1,0 +1,18 @@
+This code detects faces and compares two images
+to see if they're the same by matching feature points.
+
+Used ORB detection, extractFeatures and matchFeatures
+to determine if the faces aren't the same
+
+
+Turn pictures gray
+Crop images
+Detect features using ORB
+Extract features
+Matchfeatures
+Compute a percentage for the threshold 
+https://www.mathworks.com/help/vision/ref/detectorbfeatures.html
+
+
+algorithm is viola jones.
+sensitivity needs to be fixed (matches are typically matching at around 0.12 ratio or more but there are outliers)
