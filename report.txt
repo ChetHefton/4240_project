@@ -53,8 +53,6 @@ Core Image Processing Techniques:
 
 - Adaptive Histogram Equalization (CLAHE): Enhances local image contrast to normalize shadows and varying lighting conditions.
 
-- Data Augmentation: Generates horizontally flipped versions of registered faces to instantly double the reference dataset and teach the algorithm spatial symmetry.
-
 - Principal Component Analysis (PCA): Extracts Eigenvectors (Eigenfaces) to create a multi-dimensional "Face Space." The first principal component is discarded to reduce the impact of global lighting direction.
 
 - Cosine Distance: Measures the angle between vectors in the PCA space rather than magnitude, ensuring accurate matches regardless of overall image brightness.
