@@ -3,97 +3,30 @@ Group Number: 3
 Team Members: Chet, Logan, Michael
 
 1. Project Scope
-
-The goal of this project is to build a basic face recognition system using image or video input.
-The system will:
-
-- Detect a face in an image or video frame
-- Extract/crop the face region
-- Compare the face to a set of registered users
-- Output whether the person is registered or not registered
-
-Input:
-- Images or short video clips
-
-Output:
-- Label showing identity/matched or unknown
-
-Expected outcome:
-- A working pipeline that processes input and produces recognition results
-- The system should correctly identify registered users and label unregistered users as unknow
+Goal: Build a real-time face recognition system using a live webcam and a custom UI.
+What it does:
+- Detects faces from a live video feed
+- Crops the face region
+- Compares it to a database of registered users
+- Lets you register new people or delete users directly through the UI
+Output: Live label showing identity (Known/Unknown) and confidence %.
 
 2. Method and Implementation Details
+Architecture: Split the code from one big file into modular helper files to keep it clean.
+Pipeline:
+- Preprocessing: Convert webcam frames to grayscale, equalize contrast, and resize to 100x100.
+- Feature Extraction (PCA + HOG): Fused PCA (looks at overall face pixel intensities) with HOG (looks at edges and shapes to handle lighting better). 
+- Normalization: Used L2 Normalization to force both PCA and HOG to carry exactly 50/50 weight.
+- Classification: Cosine similarity to check the live feed against registered users.
+Tools: MATLAB Image Processing Toolbox, Computer Vision Toolbox, Webcam Support Package.
 
-- Grayscale Conversion
-  - Convert RGB image to grayscale
-  - Used to reduce complexity and focus on intensity values
-- Spatial Filtering
-  - Apply Gaussian blur
-  - Used to reduce noise and smooth the image
-- Image Histogram
-  - Apply histogram equalization
-  - Used to improve contrast under different lighting conditions
-- Image Transformations
-  - Resize images to a fixed size
-  - Used to make all inputs consistent
-- Image Features
-  - Use Local Binary Patterns Histogram
-  - Used to extract facial features and compare faces
-
-Flowchart:
-
-Input Image/Video -> Frame Extraction -> Grayscale Conversion
--> Noise Reduction/Spatial Filtering -> Histogram Equalization -> Face Detection
--> Crop Face Region -> Resize Image -> Feature Extraction + Recognition -> Known / Unknown Output
-
-Functions, Libraries, and Parameters
-
-Library:
-
-MATLAB Image Processing Toolbox
-
-Functions:
-
-- imread() / VideoReader()
-  - Used to load images or read video frames
-- rgb2gray()
-  - Converts image to grayscale
-- imgaussfilt()
-  - Applies smoothing filter to reduce noise
-- histeq()
-  - Improves image contrast
-- vision.CascadeObjectDetector()
-  - Detects face location in the image
--  extractLBPFeatures()
-  - Extracts facial features for comparison
-
-Parameter Examples:
-
-- Scale factor for face detection sensitivity
-- Minimum neighbors for accuracy of detection
-- Image size
-- Confidence threshold for recognition decision
-
-Image Processing Techniques To Be Used
-
-- Grayscale conversion 
-- Spatial filtering/Gaussian blur
-- Histogram equalization
-- Image transformation
-- LBPH for feature extraction 
-
-3. Results
-
-The system will be tested using sample images or short video clips.
-
+3. Results & Discussion
+The system successfully identifies registered users in real-time from the webcam. 
 Successful cases:
-
-- Clear, front-facing faces
-- Good lighting conditions
-- Properly registered users
-
+- Front-facing faces in consistent, normal lighting (like a fixed security cam).
 Failure cases:
-
-- Poor lighting conditions
-- Face at extreme angles
-- Blurry or low-quality images
+- Extreme profile angles (the face detector can't find the bounding box).
+- Heavy lighting changes or weird shadows (PCA still gets confused by this).
+Fixes:
+- Fixed an issue where the face detector failed during training by saving full webcam frames instead of pre-cropped faces.
+- Fixed a math explosion bug caused by having a small sample size (only 5 pics). Swapped from Z-score to L2 normalization so the confidence wouldn't tank to 1%.
