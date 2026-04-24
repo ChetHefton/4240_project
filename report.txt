@@ -1,4 +1,4 @@
-Project Title: Face Recognition System
+
 Group Number: 3
 Team Members: Chet, Logan, Michael
 
